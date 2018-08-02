@@ -1,6 +1,6 @@
 use libc::{size_t, c_int};
 use failure::Error;
-use bcc_sys::bccapi::*;
+use bccapi::*;
 
 use types::MutPointer;
 

@@ -2,7 +2,7 @@ extern crate libc;
 use failure::Error;
 use failure::ResultExt;
 use byteorder::{NativeEndian, WriteBytesExt};
-use bcc_sys::bccapi::*;
+use bccapi::*;
 use cpuonline;
 
 use std;

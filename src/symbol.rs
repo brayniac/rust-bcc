@@ -1,5 +1,5 @@
 use failure::Error;
-use bcc_sys::bccapi::*;
+use bccapi::*;
 
 use std::mem;
 use std::ptr;

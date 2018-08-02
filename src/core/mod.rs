@@ -3,7 +3,7 @@ mod tracepoint;
 mod uprobe;
 
 use failure::Error;
-use bcc_sys::bccapi::*;
+use bccapi::*;
 
 use self::kprobe::Kprobe;
 use self::tracepoint::Tracepoint;
