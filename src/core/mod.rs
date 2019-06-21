@@ -164,6 +164,10 @@ impl BPF {
         return self.load(name, bpf_prog_type_BPF_PROG_TYPE_TRACEPOINT, 0, 0);
     }
 
+    pub fn load_raw_tracepoint(&mut self, name: &str) -> Result<File, Error> {
+        return self.load(name, bpf_prog_type_BPF_PROG_TYPE_RAW_TRACEPOINT, 0, 0);
+    }
+
     #[cfg(feature = "v0_4_0")]
     pub fn load(
         &mut self,
