@@ -1,4 +1,21 @@
 mod kprobe;
+#[cfg(any(
+    feature = "v0_6_0",
+    feature = "v0_6_1",
+    feature = "v0_7_0",
+    feature = "v0_8_0",
+    feature = "v0_9_0",
+    not(any(
+        feature = "v0_4_0",
+        feature = "v0_5_0",
+        feature = "v0_6_0",
+        feature = "v0_6_1",
+        feature = "v0_7_0",
+        feature = "v0_8_0",
+        feature = "v0_9_0",
+    )),
+))]
+mod raw_tracepoint;
 mod tracepoint;
 mod uprobe;
 
@@ -6,6 +23,23 @@ use bcc_sys::bccapi::*;
 use failure::*;
 
 use self::kprobe::Kprobe;
+#[cfg(any(
+    feature = "v0_6_0",
+    feature = "v0_6_1",
+    feature = "v0_7_0",
+    feature = "v0_8_0",
+    feature = "v0_9_0",
+    not(any(
+        feature = "v0_4_0",
+        feature = "v0_5_0",
+        feature = "v0_6_0",
+        feature = "v0_6_1",
+        feature = "v0_7_0",
+        feature = "v0_8_0",
+        feature = "v0_9_0",
+    )),
+))]
+use self::raw_tracepoint::RawTracepoint;
 use self::tracepoint::Tracepoint;
 use self::uprobe::Uprobe;
 use crate::table::Table;
@@ -24,6 +58,23 @@ pub struct BPF {
     kprobes: HashSet<Kprobe>,
     uprobes: HashSet<Uprobe>,
     tracepoints: HashSet<Tracepoint>,
+    #[cfg(any(
+        feature = "v0_6_0",
+        feature = "v0_6_1",
+        feature = "v0_7_0",
+        feature = "v0_8_0",
+        feature = "v0_9_0",
+        not(any(
+            feature = "v0_4_0",
+            feature = "v0_5_0",
+            feature = "v0_6_0",
+            feature = "v0_6_1",
+            feature = "v0_7_0",
+            feature = "v0_8_0",
+            feature = "v0_9_0",
+        )),
+    ))]
+    raw_tracepoints: HashSet<RawTracepoint>,
 }
 
 fn make_alphanumeric(s: &str) -> String {
@@ -55,6 +106,7 @@ impl BPF {
             uprobes: HashSet::new(),
             kprobes: HashSet::new(),
             tracepoints: HashSet::new(),
+            raw_tracepoints: HashSet::new(),
         })
     }
 
@@ -84,6 +136,7 @@ impl BPF {
             uprobes: HashSet::new(),
             kprobes: HashSet::new(),
             tracepoints: HashSet::new(),
+            raw_tracepoints: HashSet::new(),
         })
     }
 
@@ -282,6 +335,12 @@ impl BPF {
     pub fn attach_tracepoint(&mut self, subsys: &str, name: &str, file: File) -> Result<(), Error> {
         let tracepoint = Tracepoint::attach_tracepoint(subsys, name, file)?;
         self.tracepoints.insert(tracepoint);
+        Ok(())
+    }
+
+    pub fn attach_raw_tracepoint(&mut self, name: &str, file: File) -> Result<(), Error> {
+        let raw_tracepoint = RawTracepoint::attach_raw_tracepoint(name, file)?;
+        self.raw_tracepoints.insert(raw_tracepoint);
         Ok(())
     }
 }
