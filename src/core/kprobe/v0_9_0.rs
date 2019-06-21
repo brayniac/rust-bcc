@@ -12,7 +12,7 @@ use std::os::unix::prelude::*;
 
 #[derive(Debug)]
 pub struct Kprobe {
-    code_fd: File,
+    code_fd: Option<File>,
     name: CString,
     p: i32,
 }
@@ -39,7 +39,7 @@ impl Kprobe {
             Ok(Self {
                 p: ptr,
                 name: cname,
-                code_fd: code,
+                code_fd: Some(code),
             })
         }
     }
@@ -60,6 +60,7 @@ impl Kprobe {
 impl Drop for Kprobe {
     fn drop(&mut self) {
         debug!("Drop Kprobe");
+        self.code_fd = None;
         unsafe {
             bpf_detach_kprobe(self.name.as_ptr());
         }
