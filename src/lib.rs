@@ -7,6 +7,9 @@
 //! # Examples
 //! * see <https://github.com/rust-bpf/rust-bcc/tree/master/examples>
 
+#[macro_use]
+extern crate log;
+
 pub mod core;
 mod cpuonline;
 pub mod perf;

@@ -56,6 +56,7 @@ impl Hash for Tracepoint {
 
 impl Drop for Tracepoint {
     fn drop(&mut self) {
+        debug!("Drop Tracepoint");
         unsafe {
             bpf_detach_tracepoint(self.subsys.as_ptr(), self.name.as_ptr());
         }

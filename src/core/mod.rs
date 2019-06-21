@@ -288,6 +288,7 @@ impl BPF {
 
 impl Drop for BPF {
     fn drop(&mut self) {
+        debug!("Drop BPF");
         unsafe {
             bpf_module_destroy(self.p);
         };

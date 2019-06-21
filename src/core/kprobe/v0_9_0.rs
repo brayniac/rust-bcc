@@ -59,6 +59,7 @@ impl Kprobe {
 
 impl Drop for Kprobe {
     fn drop(&mut self) {
+        debug!("Drop Kprobe");
         unsafe {
             bpf_detach_kprobe(self.name.as_ptr());
         }
